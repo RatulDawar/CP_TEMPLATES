@@ -23,9 +23,6 @@ using namespace __gnu_pbds;
 #define sz(x) ((ll)(x).size())
 #define all(x) (x).begin(), (x).end()
 
-
-
- 
 #ifndef ONLINE_JUDGE
 #define debug(x) cerr << #x <<" "; _print(x); cerr << endl;
 #define debugs(x,n) cerr << #x <<" "; _print(x,n); cerr << endl;
@@ -34,11 +31,10 @@ using namespace __gnu_pbds;
 #define debugs(x,n);
 #endif
  
-typedef long long ll;
+using ll = long long;
 typedef unsigned long long ull;
 typedef long double lld;
 // typedef tree<pair<int, int>, null_type, less<pair<int, int>>, rb_tree_tag, tree_order_statistics_node_update > pbds; // find_by_order, order_of_key
- 
 
 const ll LINF = 2e18L + 5;
 const int INF = 1e9 + 5;
@@ -90,57 +86,63 @@ void yes(){cout<<"YES"<<nline;}
 void no(){cout<<"NO"<<nline;}
 //void calFact(){ fact[0] = 1;ifact[0] = mminvprime(1,MOD1);for(ll i = 1;i<maxN;i++){fact[i] = (fact[i-1]*i)%MOD1;ifact[i] = mminvprime(fact[i],MOD1);}}
 /* --------------------------------------------------------------------------------------------------------------------------* /
-//1.DP se soch
-//2.DP se soch
-//3.DP se soch
-//graph, gcd, BS, seive
-//if NOTA,then
-//brute force hi optimal h
+
+********     *    *     *****    *****   ******   ********  
+*       *    *    *       *        *     *        *       * 
+********     *    *       *        *     ****     ********
+*       *    *    *       *        *     *        *       * 
+********      ****        *        *     ******   *       *
+
+
+*****  *    *  *****  *****   *  *  ******  **    *
+*      *    *    *    *       * *   *       * *   *
+*      ******    *    *       **    ****    *  *  *
+*      *    *    *    *       * *   *       *   * *
+*****  *    *  *****  *****   *  *  ******  *    **
+
+
 /*-----------------------------------------------------------------------------------------------------------------------------*/
 
-struct Matrix {
-    int n;
-    vector<vector<ll>> a;
-    Matrix(int n){
-        this->n = n;
-        this->a = vector<vector<ll>>(n, vector<ll>(n, 0));
-    } 
-	Matrix operator *(Matrix other) {
-		Matrix product(n);
-		for(int i = 0;i<n;i++) {
-			for(int j = 0;j<n;j++){
-				for(int k = 0;k<n;k++){
-					product.a[i][k] +=  (a[i][j]*a[j][k])%MOD;
-                    product.a[i][k] %= MOD;
-				}
-			}
-		}
-		return product;
-	}
-    void print(){
-		for(int i = 0;i<n;i++){
-			for(int j = 0;j<n;j++){
-				cout<<this->a[i][j]<<' ';
-			}
-			cout<<nline;
-		}
-	}
-};
-Matrix expo_power(Matrix a, long long k) {
-    int n = a.n;
-	Matrix res = Matrix(n);
-	for(int i = 0; i < n; ++i) {
-		res.a[i][i] = 1;
-	}
-	while(k) {
-		if(k % 2) {
-			res = res * a;
-		}
-		k /= 2;
-		a = a * a;
-	}
-	return res;
+vector<int> lpsArray(string A){
+    int n = A.size();
+    vector<int> lps(n);
+    lps[0] = 0;
+    for(int i = 1;i<n;i++){
+        int j = lps[i - 1];
+        while(j> 0 && A[i] != A[j])
+            j = lps[j - 1]; 
+            
+        j += (A[i] == A[j]);
+        lps[i] = j;
+    }
+    return lps;
 }
+
+int strStr(const string A, const string B) {
+    vector<int> lps = lpsArray(B);
+        int pos = -1;
+        int i = 0,j = 0;
+        while(i < A.size()){
+            if(A[i] == B[j]){
+                i++;
+                j++;
+            }else{
+                if(j != 0) {
+                    j = lps[j - 1];
+                }else{
+                    i++;
+                }
+            }
+            if(j == B.size()){
+                pos = i - B.size();
+                break;
+            }
+        }
+        return pos;
+    
+}
+
+
 
 void solve(){
     
@@ -160,3 +162,5 @@ int main()
       //cout<<nline;
    }
 } 
+
+
