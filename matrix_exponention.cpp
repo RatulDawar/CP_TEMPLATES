@@ -110,7 +110,7 @@ struct Matrix {
 		for(int i = 0;i<n;i++) {
 			for(int j = 0;j<n;j++){
 				for(int k = 0;k<n;k++){
-					product.a[i][k] +=  (a[i][j]*a[j][k])%MOD;
+					product.a[i][k] +=  (a[i][j]*other.a[j][k])%MOD;
                     product.a[i][k] %= MOD;
 				}
 			}
