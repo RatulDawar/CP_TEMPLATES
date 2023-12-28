@@ -178,10 +178,38 @@ struct bitTree{
 
 /*-----------------------------------------------------------------------------------------------------------------------------*/
 
+vector<ll> zArray(string &s){
+    ll n = s.size();
+    vector<ll> z(n);
+    ll l = 0,r = 0;
+    for(int i = 1;i<n;i++){
+        if(i < r){
+            z[i] = min(r - i,z[i - l]);
+        }
+        while(i + z[i] < n && s[z[i]] == s[i + z[i]]){
+            z[i]++;
+        }
+        if(i + z[i] > r){
+            l = i;
+            r = i + z[i];
+        }
+    }
+    return z;
 
+}
 
 void solve(){
     string s;cin>>s;
+    vector<ll> z = zArray(s);
+    vector<ll> ans;
+    for(int i = 0;i<s.size();i++){
+        ll rem = s.size() - i;
+        if(z[i] == rem){
+            ans.push_back(rem);
+        }
+    }
+    sort(ans.begin(),ans.end());
+    for(auto i:ans)cout<<i<<" "; 
 }
 int main()
 {
